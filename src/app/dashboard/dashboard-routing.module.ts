@@ -1,8 +1,8 @@
-import { ProfileComponent } from './usuarios/profile/profile.component';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard.component';
+import { RouterModule, Routes } from '@angular/router';
+
 import { AuthGuard } from '../auth/services/auth.guard';
+import { DashboardComponent } from './dashboard.component';
 import { HomeComponent } from './home/home.component';
 
 const dashboardRoutes: Routes = [

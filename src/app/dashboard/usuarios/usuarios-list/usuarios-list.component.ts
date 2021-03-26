@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Usuario } from '../../models/usuario.model';
 import { UsuariosService } from '../usuarios.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { Usuario } from '../../models/usuario.model';
 
 @Component({
   selector: 'app-usuarios-list',
@@ -34,7 +34,6 @@ export class UsuariosListComponent implements OnInit {
   getTableData() {
     this.usuariosService.getItems()
       .subscribe(resp => {
-        console.log(resp);
         this.tableData = resp.data;
         this.dataSource = new MatTableDataSource(this.tableData);
         this.dataSource.paginator = this.paginator;
@@ -54,51 +53,24 @@ export class UsuariosListComponent implements OnInit {
   agregarItem() {
     const url = this.route.url.split('/');
     url.pop();
-    url.push('crear-usuario');
+    url.push('usuarios-create');
     this.route.navigateByUrl(url.join('/'));
   }
 
   editarItem(id: string) {
     const url = this.route.url.split('/');
     url.pop();
-    url.push('editar-usuario');
+    url.push('usuarios-update');
     this.route.navigateByUrl( url.join('/') + '/' + id );
   }
 
   borrarItem(item) {
 
-    Swal.fire({
-
-      title: 'Confirmación?',
-      text: 'Confirma eliminar el registro?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Si',
-      cancelButtonText: 'Cancelar'
-
-    }).then((result) => {
-
-      if (result.value) {
-        this.usuariosService.deleteItem(item)
-          .subscribe(
-            resp => {
-              Swal.fire(
-                'Eliminado!',
-                'La operación ha sido realizada.',
-                'success'
-              );
-              this.getTableData();
-            },
-            err => {
-              Swal.fire(
-                'Error!',
-                'La operación no pudo realizarse.',
-                'error'
-              );
-            }
-          );
-      }
-    });
+    const url = this.route.url.split('/');
+    url.pop();
+    url.push('usuarios-delete');
+    this.route.navigateByUrl( url.join('/') + '/' + item.id );
+   
   }
 
 }

@@ -6,6 +6,8 @@ import { CrearUsuarioComponent } from './crear-usuario/crear-usuario.component';
 import { EditarUsuarioComponent } from './editar-usuario/editar-usuario.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CanDeactivateGuard } from '../../shared/services/can-deactivate.guard';
+import { UsuariosDeleteComponent } from './usuarios-delete/usuarios-delete.component';
+import { RoleGuard } from 'src/app/auth/services/role.guard';
 
 
 const usuariosRoutes: Routes = [
@@ -17,29 +19,42 @@ const usuariosRoutes: Routes = [
     },
     children: [
       {
-        path: 'lista-usuarios',
+        path: 'usuarios-list',
         component: UsuariosListComponent,
+        canActivate: [RoleGuard],
         data: {
           title: 'Listado usuario',
-          rolesPermitidos: []
+          rolesPermitidos: ['administrador']
         }
       },
       {
-        path: 'crear-usuario',
+        path: 'usuarios-create',
         component: CrearUsuarioComponent,
         canDeactivate: [CanDeactivateGuard],
+        canActivate: [RoleGuard],
         data: {
           title: 'Crear usuario',
-          rolesPermitidos: []
+          rolesPermitidos: ['administrador']
         }
       },
       {
-        path: 'editar-usuario/:id',
+        path: 'usuarios-update/:id',
         component: EditarUsuarioComponent,
         canDeactivate: [CanDeactivateGuard],
+        canActivate: [RoleGuard],
         data: {
           title: 'Editar usuario',
-          rolesPermitidos: []
+          rolesPermitidos: ['administrador']
+        }
+      },
+      {
+        path: 'usuarios-delete/:id',
+        component: UsuariosDeleteComponent,
+        canActivate: [RoleGuard],
+        canDeactivate: [],
+        data: {
+          title: 'Eliminar usuario',
+          rolesPermitidos: ['administrador']
         }
       },
       {
@@ -50,8 +65,8 @@ const usuariosRoutes: Routes = [
           rolesPermitidos: []
         }
       },
-      { path: '', redirectTo: 'lista-usuarios'},
-      { path: '**', redirectTo: 'lista-usuarios'}
+      { path: '', redirectTo: 'usuarios-list'},
+      { path: '**', redirectTo: 'usuarios-list'}
 
     ]
   },
